@@ -5,11 +5,11 @@ use Illuminate\Support\Facades\Route;
 //  use App\Http\Controllers\studentController;
 //  use App\Http\Controllers\ApiController;
 //  use App\Http\Controllers\FormController;
-  use App\Http\Controllers\SignupController;
+  // use App\Http\Controllers\SignupController;
     // use App\Http\Controllers\loginController;
     // use App\Http\Controllers\UploadController;
     use App\Http\Controllers\CandidateController;
-    use App\Http\Controllers\ImageController;
+    // use App\Http\Controllers\ImageController;
 // 
 // //when only open view 
 Route::view('/','welcome');
@@ -43,7 +43,7 @@ Route::view('/','welcome');
 // Route::get('students',[studentController::class,'getstudents']);
 // Route::get('api',[ApiController::class,'queries']);
 // Route::get('signup',[SignupController::class,'get']);
-Route::view('form','signup');
+// Route::view('form','signup');
 // Route::post('signup',[SignupController::class,'post']);
 // Route::put('signup',[SignupController::class,'put']);
 // Route::delete('signup',[SignupController::class,'delete']);
@@ -58,22 +58,35 @@ Route::view('form','signup');
 // // Route::get('logout',[loginController::class,'logout']);
 // Route::view('login','login');
 // // Route::view('profile','profile');
- Route::view('upload','upload');
+ // Route::view('upload','upload');
   // Route::post('upload',[UploadController::class,'upload']);
- 
 //   Route::view('about','about');
-  Route::view('form','candidate');
- Route::post('form',[CandidateController::class,'add']);
- Route::get('list',[CandidateController::class,'list']);
- Route::get('delete/{id}',[CandidateController::class,'delete']);
- Route::get('edit/{id}',[CandidateController::class,'edit']);
- Route::put('edit-candidate/{id}',[CandidateController::class,'update']);
- Route::get('search',[CandidateController::class,'search']);
- Route::post('delete_multi',[CandidateController::class,'delete_multi']);
-
-// Route::post('upload',[ImageController::class,'upload']);
+ // Route::post('upload',[ImageController::class,'upload']);
 // Route::get('list',[ImageController::class,'list']);
-Route::view('about2','about2');
-Route::view('home2','home2');
-Route::view('login2','login2');
-Route::view('admin','admin');
+// Route::view('about2','about2');
+// Route::view('home2','home2');
+// Route::view('login2','login2');
+// Route::view('admin','admin');
+
+
+
+// Show Add Candidate form
+Route::get('form', [CandidateController::class, 'create']);
+
+// Store new candidate
+Route::post('form', [CandidateController::class, 'store']);
+
+// List + search candidates
+Route::get('list', [CandidateController::class, 'index']);
+
+// Delete single candidate
+Route::get('delete/{id}', [CandidateController::class, 'destroy']);
+
+// Show edit form
+Route::get('edit/{id}', [CandidateController::class, 'edit']);
+
+// Update candidate
+Route::put('edit-candidate/{id}', [CandidateController::class, 'update']);
+
+// Delete multiple candidates & custom route
+Route::post('delete_multi', [CandidateController::class, 'delete_multi']);
