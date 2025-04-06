@@ -99,18 +99,19 @@
 
 <div class="container">
     <h2>Candidate List</h2>
-    <!-- Search form -->
-    <form action="search" method="get" class="search-form">
-        <input type="text" placeholder="Search with name" name="search" class="search-input">
-        <button type="submit" class="search-button">Search</button>
-    </form>
+   <!-- Search form -->
+<form action="{{ url('list') }}" method="get" class="search-form">
+    <input type="text" placeholder="Search with name" name="search" class="search-input" value="{{ request('search') }}">
+    <button type="submit" class="search-button">Search</button>
+</form>
+
     <!-- add candidate -->
     <div style="text-align: right; margin-bottom: 10px;">
         <a href="{{ url('form') }}" class="add-btn">Add Candidate</a>
     </div>
  <form action="delete_multi" method="post">
     @csrf
-    <!-- <button> Delete</button> -->
+    <button> Delete</button>
     <table>
         <tr>
             <th>Selection</th>
