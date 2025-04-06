@@ -95,7 +95,7 @@
 
 <div class="container">
     <h1>Add New Candidate</h1>
-    <form action="form" method="post">
+    <form action="{{ url('form') }}" method="POST">
         @csrf
         <label for="name">Name:</label>
         <input type="text" id="name" name="name" placeholder="Enter full name" required>
