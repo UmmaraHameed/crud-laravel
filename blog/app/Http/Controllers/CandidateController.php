@@ -3,68 +3,70 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use \App\Models\Candidate;
+use App\Models\Candidate;
 
 class CandidateController extends Controller
 {
-    //
-    function add(Request $req){
-        $candidate=new Candidate();
-        // return $req;
-        $candidate->name=$req->name;
-        $candidate->email=$req->email;
-        // $candidate->phoneno=$req->phoneno;
-        $candidate->save();
-        if($candidate){
-            // echo"New candidate is added successfully";
-            return redirect('list');
-        }
-        else{
-            return "Operation Failed";
-        }
+    // Show form to add new candidate
+    public function create()
+    {
+        return view('candidate'); // your add form view
     }
-    
- function list(){
-    //all function is used to display all record from the database
-//    $data=candidate::all();
-    $data=candidate::paginate(3);
-    return view('listcandidate',['candidates'=>$data]);
- }
- function delete($id){
-    //destory function is to delete data from database
-    $isDeleted=candidate::destroy($id);
-    if($isDeleted){
-         return redirect('list');
-    }
-    
-  }
-  function edit($id){
-    //its only move to edit form and when i click on cancel to return back the view
-    $candidate=candidate::find($id);
-     return view('candidateedit',['data'=>$candidate]);
-}
-function update(Request $req,$id){
-    $candidate=candidate::find($id);
-    $candidate->name=$req->name;
-    $candidate->email=$req->email;
-   if( $candidate->save()){
-    return redirect('list');
-   }
-   else{
-    return"Candidate is not updated";
-   }
-}
-function search(Request $req){
-    $data=candidate::where('name','like',"%$req->search%")->get();
-    return view('listcandidate',['candidates'=>$data,'search'=>$req->search]);
-}
-function delete_multi(Request $req){
-    $result=candidate::destroy($req->ids);
-  if($result) {
-    return redirect('list');
-  }else{
-    return"student data not deleted";
-  }
 
-}
+    // Store new candidate
+    public function store(Request $req)
+    {
+        $candidate = new Candidate();
+        $candidate->name = $req->name;
+        $candidate->email = $req->email;
+        $candidate->save();
+
+        return $candidate ? redirect('list') : "Operation Failed";
+    }
+
+    // Show all candidates (with optional search)
+    public function index(Request $req)
+    {
+        $query = Candidate::query();
+
+        if ($req->filled('search')) {
+            $query->where('name', 'like', '%' . $req->search . '%')
+                  ->orWhere('email', 'like', '%' . $req->search . '%');
+        }
+
+        $data = $query->paginate(3)->appends(['search' => $req->search]);
+
+        return view('listcandidate', ['candidates' => $data, 'search' => $req->search ?? '']);
+    }
+
+    // Delete single candidate
+    public function destroy($id)
+    {
+        $isDeleted = Candidate::destroy($id);
+        return $isDeleted ? redirect('list') : "Delete Failed";
+    }
+
+    // Show edit form
+    public function edit($id)
+    {
+        $candidate = Candidate::findOrFail($id);
+        return view('candidateedit', ['data' => $candidate]);
+    }
+
+    // Update candidate
+    public function update(Request $req, $id)
+    {
+        $candidate = Candidate::findOrFail($id);
+        $candidate->name = $req->name;
+        $candidate->email = $req->email;
+
+        return $candidate->save() ? redirect('list') : "Candidate is not updated";
+    }
+
+    // Delete multiple candidates
+    public function delete_multi(Request $req)
+    {
+        $result = Candidate::destroy($req->ids);
+        return $result ? redirect('list') : "Student data not deleted";
+    }
 }
