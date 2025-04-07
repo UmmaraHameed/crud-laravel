@@ -10,7 +10,7 @@ class CandidateController extends Controller
     // Show form to add new candidate
     public function create()
     {
-        return view('candidate'); // your add form view
+        return view('candidate'); 
     }
 
     // Store new candidate
